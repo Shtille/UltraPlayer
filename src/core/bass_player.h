@@ -34,6 +34,7 @@ namespace core {
         static void OpenUrlProc(BassPlayer * player);
         static void TimerProc(BassPlayer * player);
 
+        void StopPlayback();
         void StopThreads();
         void StartUrl();
         void StopUrl();
@@ -42,6 +43,7 @@ namespace core {
         void LockTimer();
         void UnlockTimer();
 
+        std::mutex mutex_;
         std::mutex timer_mutex_;
         std::thread * url_thread_;
         std::thread * timer_thread_;

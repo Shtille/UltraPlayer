@@ -27,7 +27,8 @@ HEADERS  += ui/mainwindow.h \
             core/player.h \
     core/device.h \
     core/message.h \
-    core/bass_player.h
+    core/bass_player.h \
+    core/custom_events.h
 
 FORMS    += ui/mainwindow.ui
 

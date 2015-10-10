@@ -22,6 +22,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    virtual bool event(QEvent *event);
+
 private slots:
     void on_playButton_clicked();
 
@@ -33,6 +36,13 @@ private:
 
     void play();
     void stop();
+
+    static void OnStatusChange(const char* status);
+    static void OnTitleChange(const char* title);
+    static void OnMessageChange(const char* caption, const char* text);
+    static void OnPlaybackFailure();
+
+    static MainWindow * instance_;
 };
 
 #endif // MAINWINDOW_H

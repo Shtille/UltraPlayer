@@ -80,7 +80,7 @@ namespace core {
         r = ++g_request; // increment the request counter for this request
         player->StopTimer(); // stop prebuffer monitoring
         BASS_StreamFree(player->channel_); // close old stream
-        player->SetStatus("connecting...");
+        //player->SetStatus("connecting...");
         size_t device = player->device_enumerator_->GetCurrent();
         if (device == kUnknownDevice ||
             device != kUnknownDevice && BASS_SetDevice(device)) // device exists
@@ -106,7 +106,8 @@ namespace core {
         {
             player->SetStatus("not playing");
             //message::Error("Error", "Can't play the stream");
-            player->Stop();
+            player->StopPlayback();
+            player->PlaybackFailed();
         }
         else
             player->StartTimer(); // start prebuffer monitoring
@@ -137,8 +138,8 @@ namespace core {
                                 player->SetStatus(icy+8);
                         }
                     }
-                    else
-                        player->SetStatus("");
+                    //else
+                       // player->SetStatus("");
                 }
                 // Get the stream title and set sync for subsequent titles
                 DoMeta(player);
@@ -222,6 +223,11 @@ namespace core {
         }
         UnlockTimer();
     }
+    void BassPlayer::StopPlayback()
+    {
+        state_ = State::kStopped;
+        BASS_StreamFree(channel_);
+    }
     void BassPlayer::LockTimer()
     {
         timer_mutex_.lock();
@@ -232,11 +238,11 @@ namespace core {
     }
     void BassPlayer::Lock()
     {
-        //mutex_.lock();
+        mutex_.lock();
     }
     void BassPlayer::Unlock()
     {
-        //mutex_.unlock();
+        mutex_.unlock();
     }
     void BassPlayer::Play()
     {
@@ -246,9 +252,8 @@ namespace core {
     }
     void BassPlayer::Stop()
     {
-        state_ = State::kStopped;
         StopThreads();
-        BASS_StreamFree(channel_);
+        StopPlayback();
     }
     void BassPlayer::VolumeUp()
     {
