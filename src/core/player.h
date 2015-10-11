@@ -4,12 +4,13 @@
 
 #include <vector>
 #include <string>
+#include "message.h"
 
 namespace core {
 
     typedef void (*StatusEventFunction)(const char*);
     typedef void (*TitleEventFunction)(const char*);
-    typedef void (*MessageEventFunction)(const char*, const char*);
+    typedef void (*MessageEventFunction)(message::Type, const char*, const char*);
     typedef void (*PlaybackFailureEventFunction)();
 
     class Player {
@@ -42,10 +43,11 @@ namespace core {
         virtual void VolumeDown() = 0;
         virtual void SetVolume(double val) = 0;
 
+        void ShowMessage(message::Type type, const char* caption, const char* text);
+
     protected:
         void SetStatus(const char* status);
         void SetTitle(const char* title);
-        void ShowMessage(const char* caption, const char* text);
         void PlaybackFailed();
 
         void IncreaseVolume();

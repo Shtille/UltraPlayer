@@ -105,9 +105,9 @@ namespace core {
         if (0 == player->channel_) // failed to open
         {
             player->SetStatus("not playing");
-            //message::Error("Error", "Can't play the stream");
             player->StopPlayback();
             player->PlaybackFailed();
+            player->ShowMessage(message::kError, "Error", "Can't play the stream");
         }
         else
             player->StartTimer(); // start prebuffer monitoring
@@ -176,7 +176,7 @@ namespace core {
         // Setup proxy server location
         BASS_SetConfigPtr(BASS_CONFIG_NET_PROXY, nullptr);
 
-        device_enumerator_ = new DeviceEnumerator();
+        device_enumerator_ = new DeviceEnumerator(this);
     }
     BassPlayer::~BassPlayer()
     {

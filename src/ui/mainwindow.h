@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "../core/message.h"
 
 class QMediaPlayer;
 class QMediaContent;
@@ -39,7 +40,7 @@ private:
 
     static void OnStatusChange(const char* status);
     static void OnTitleChange(const char* title);
-    static void OnMessageChange(const char* caption, const char* text);
+    static void OnMessageChange(message::Type type, const char* caption, const char* text);
     static void OnPlaybackFailure();
 
     static MainWindow * instance_;

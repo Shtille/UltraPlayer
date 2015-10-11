@@ -4,6 +4,7 @@
 
 #include <QEvent>
 #include <QString>
+#include "message.h"
 
 template <class T>
 class CustomEvent : public QEvent {
@@ -48,19 +49,22 @@ private:
 
 class MessageEvent : public CustomEvent<MessageEvent> {
 public:
-    MessageEvent(const char* caption, const char* text)
+    MessageEvent(message::Type mtype, const char* caption, const char* text)
         : CustomEvent<MessageEvent>()
         , caption_(caption)
         , text_(text)
+        , msg_type_(mtype)
     {
     }
 
     QString caption() { return caption_; }
     QString text() { return text_; }
+    message::Type msg_type() { return msg_type_; }
 
 private:
     QString caption_;
     QString text_;
+    message::Type msg_type_;
 };
 
 class PlaybackFailureEvent : public CustomEvent<PlaybackFailureEvent> {};

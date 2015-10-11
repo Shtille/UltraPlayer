@@ -20,7 +20,6 @@ SOURCES += main.cpp \
         ui/mainwindow.cpp \
         core/player.cpp \
     core/device.cpp \
-    core/message.cpp \
     core/bass_player.cpp
 
 HEADERS  += ui/mainwindow.h \

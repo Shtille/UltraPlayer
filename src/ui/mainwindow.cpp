@@ -3,6 +3,7 @@
 #include "../core/custom_events.h"
 #include "../core/bass_player.h"
 #include <QStyle>
+#include <QMessageBox>
 #include <QMediaPlayer>
 #include <QMediaMetaData>
 
@@ -50,7 +51,19 @@ bool MainWindow::event(QEvent *event)
     }
     else if (event->type() == MessageEvent::type())
     {
-        // On message change notification
+        MessageEvent * e = static_cast<MessageEvent*>(event);
+        switch (e->msg_type())
+        {
+        case message::kInformation:
+            QMessageBox::information(this, e->caption(), e->text());
+            break;
+        case message::kError:
+            QMessageBox::critical(this, e->caption(), e->text());
+            break;
+        case message::kWarning:
+            QMessageBox::warning(this, e->caption(), e->text());
+            break;
+        }
         return true;
     }
     else if (event->type() == PlaybackFailureEvent::type())
@@ -102,9 +115,9 @@ void MainWindow::OnTitleChange(const char* title)
 {
     QCoreApplication::postEvent(instance_, new TitleEvent(title));
 }
-void MainWindow::OnMessageChange(const char* caption, const char* text)
+void MainWindow::OnMessageChange(message::Type type, const char* caption, const char* text)
 {
-    QCoreApplication::postEvent(instance_, new MessageEvent(caption, text));
+    QCoreApplication::postEvent(instance_, new MessageEvent(type, caption, text));
 }
 void MainWindow::OnPlaybackFailure()
 {

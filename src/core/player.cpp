@@ -53,12 +53,12 @@ namespace core {
         }
         Unlock();
     }
-    void Player::ShowMessage(const char* caption, const char* text)
+    void Player::ShowMessage(message::Type type, const char* caption, const char* text)
     {
         Lock();
         for (auto &f : message_observers_)
         {
-            f(caption, text);
+            f(type, caption, text);
         }
         Unlock();
     }

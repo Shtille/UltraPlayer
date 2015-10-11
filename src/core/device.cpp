@@ -1,10 +1,12 @@
 #include "device.h"
-#include "message.h"
+#include "player.h"
 #include "../thirdparty/include/bass.h"
 
 namespace core {
 
-    DeviceEnumerator::DeviceEnumerator() : current_(kUnknownDevice)
+    DeviceEnumerator::DeviceEnumerator(Player * player)
+        : current_(kUnknownDevice)
+        , player_(player)
 	{
 	}
 	DeviceEnumerator::~DeviceEnumerator()
@@ -45,7 +47,7 @@ namespace core {
 			switch (BASS_ErrorGetCode())
 			{
 			case BASS_ERROR_DEVICE:
-                message::Error("Error", "The device is invalid.");
+                player_->ShowMessage(message::kError, "Error", "The device is invalid.");
 				break;
 			case BASS_ERROR_INIT:
 				// The device has not been initialized.
@@ -55,7 +57,7 @@ namespace core {
 					return true;
 				}
 				else
-                    message::Error("Error", "Can't initialize device");
+                    player_->ShowMessage(message::kError, "Error", "Can't initialize device");
 				break;
 			}
 			return false;

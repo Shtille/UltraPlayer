@@ -7,11 +7,13 @@
 
 namespace core {
 
+    class Player;
+
     const size_t kUnknownDevice = size_t(-1);
 
 	class DeviceEnumerator {
 	public:
-		DeviceEnumerator();
+        DeviceEnumerator(Player * player);
 		virtual ~DeviceEnumerator();
 
 		bool Enum();
@@ -24,6 +26,7 @@ namespace core {
 	private:
 		size_t current_;
 		std::vector<std::string> devices_;
+        Player * player_; // owner
 	};
 	
 } // namespace core
